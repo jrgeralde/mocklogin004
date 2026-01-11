@@ -12,7 +12,7 @@ export async function loginAction(username: string, password: string): Promise<{
     const token = await new SignJWT({ username, role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('1h') // Token expires in 1 hour
+      .setExpirationTime('24h') // Token expires in 24 hour
       .sign(SECRET_KEY);
 
     // Store JWT in cookie
@@ -21,7 +21,7 @@ export async function loginAction(username: string, password: string): Promise<{
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie (read-only for client)
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 3600, // 1 hour
+      maxAge: 3600*24, // 24 hours
       path: '/',
     });
 
